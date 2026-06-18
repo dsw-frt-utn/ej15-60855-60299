@@ -1,5 +1,5 @@
 using Dsw2026Ej15.Data;
-
+using Dsw2026Ej15.Domain.Interfaces;
 namespace Dsw2026Ej15.Api
 {
     public class Program
@@ -11,8 +11,8 @@ namespace Dsw2026Ej15.Api
             // Add services to the container.
 
             // registro de singelton 
-            var services = new ServiceCollection() ;
-            services.AddSingleton <IPersistence, PersistenceInMemory> ();
+            //var services = new ServiceCollection() ;
+            builder.Services.AddSingleton <IPersistence, PersistenceInMemory> ();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -20,6 +20,9 @@ namespace Dsw2026Ej15.Api
 
             builder.Services.AddSwaggerGen();
             var app = builder.Build();
+
+            builder.Services.AddHealthChecks();
+            app.MapHealthChecks("/health-check");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
