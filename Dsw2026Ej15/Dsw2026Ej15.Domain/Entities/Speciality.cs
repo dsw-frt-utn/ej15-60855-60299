@@ -9,7 +9,18 @@ namespace Dsw2026Ej15.Domain.Entities
         public string Name { get; init; } 
         public string Description { get; init; }
 
-       /* public Speciality(string name)
+
+        public Speciality(string name, string description, Guid? id = null) : base(id) 
+        {
+            Name = name;
+            Description = description;
+
+        }       
+        
+        
+        
+        
+        /* public Speciality(string name)
         {
             this.Name = name;
         }

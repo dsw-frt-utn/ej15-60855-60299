@@ -19,17 +19,18 @@ namespace Dsw2026Ej15.Api
             // builder.Services.AddOpenApi();
 
             builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
 
-            builder.Services.AddHealthChecks();
-            app.MapHealthChecks("/health-check");
+            //builder.Services.AddHealthChecks();
+            //app.MapHealthChecks("/health-check");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
               //  app.MapOpenApi();
               app.UseSwagger();
-                app.UseSwaggerUI();
+              app.UseSwaggerUI();
             }
 
             app.UseAuthorization();

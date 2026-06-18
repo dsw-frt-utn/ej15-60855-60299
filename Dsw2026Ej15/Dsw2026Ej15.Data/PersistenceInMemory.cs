@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Dsw2026Ej15.Domain.Entities;
 using Dsw2026Ej15.Domain.Interfaces;
+using Dsw2026Ej15.Data.Dtos;
 
 
 namespace Dsw2026Ej15.Data
@@ -8,13 +9,13 @@ namespace Dsw2026Ej15.Data
     public class PersistenceInMemory : IPersistence
     {
 
-        private readonly List<Doctor> _doctors = [];
-        private readonly List<Speciality> _specialities = [];
+        private  List<Doctor> _doctors = [];
+        private  List<Speciality> _specialities = [];
 
         
         public PersistenceInMemory() 
         {
-            _specialities = LoadSpecialities();
+             LoadSpecialities();
         }
 
         public void AddDoctor(Doctor doctor)
@@ -29,7 +30,7 @@ namespace Dsw2026Ej15.Data
 
         public Speciality? GetSpecialityById(Guid id)
         {
-            return _specialities.FirstOrDefault(speciality => speciality.Id == id);
+            return _specialities.SingleOrDefault(speciality => speciality.Id == id);
         }
        
 
@@ -48,7 +49,7 @@ namespace Dsw2026Ej15.Data
             }
         }
 
-        public List<Speciality> LoadSpecialities()
+        public void LoadSpecialities()
         {
             try
             {

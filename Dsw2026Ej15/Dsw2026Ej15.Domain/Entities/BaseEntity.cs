@@ -13,7 +13,7 @@ namespace Dsw2026Ej15.Domain.Entities
 
         protected BaseEntity(Guid? id = null) 
         {
-            Id = id?? Guid.NewGuid();
+            Id = id ?? Guid.NewGuid();
         }
 
     }
