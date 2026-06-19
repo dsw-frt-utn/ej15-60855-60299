@@ -1,3 +1,4 @@
+using Dsw2026Ej15.Api.Middlewares;
 using Dsw2026Ej15.Data;
 using Dsw2026Ej15.Domain.Interfaces;
 namespace Dsw2026Ej15.Api
@@ -19,11 +20,13 @@ namespace Dsw2026Ej15.Api
             // builder.Services.AddOpenApi();
 
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddHealthChecks();
             var app = builder.Build();
 
-            //builder.Services.AddHealthChecks();
-            //app.MapHealthChecks("/health-check");
+            app.UseMiddleware<ExceptionMiddleware>();
+
+           
+            app.MapHealthChecks("/health-check");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

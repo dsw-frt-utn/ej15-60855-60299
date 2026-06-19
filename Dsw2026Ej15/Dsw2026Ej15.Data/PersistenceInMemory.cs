@@ -49,7 +49,7 @@ namespace Dsw2026Ej15.Data
             }
         }
 
-        public void LoadSpecialities()
+        private void LoadSpecialities()
         {
             try
             {
