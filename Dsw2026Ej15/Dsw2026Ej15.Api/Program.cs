@@ -10,8 +10,7 @@ namespace Dsw2026Ej15.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-            // registro de singelton 
+ 
             //var services = new ServiceCollection() ;
             builder.Services.AddSingleton <IPersistence, PersistenceInMemory> ();
 

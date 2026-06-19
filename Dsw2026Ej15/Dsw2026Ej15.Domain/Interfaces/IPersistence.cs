@@ -11,6 +11,8 @@ namespace Dsw2026Ej15.Domain.Interfaces
         Speciality? GetSpecialityById(Guid id);
         List<Doctor> GetAllDoctors();
 
+
+        //el profesor usa solo los 3 de arriba los otros dos de abajo no o los usa
         Doctor? GetDoctor(Guid id);
         void  DeleteDoctor(Guid id);
 

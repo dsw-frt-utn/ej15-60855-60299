@@ -1,4 +1,6 @@
 ﻿using Dsw2026Ej15.Domain.Exceptions;
+using System.Net;
+using System.Text.Json;
 
 namespace Dsw2026Ej15.Api.Middlewares
 {
@@ -19,22 +21,36 @@ namespace Dsw2026Ej15.Api.Middlewares
             }
             catch (ValidationException ex)
             {
-                context.Response.Clear();
+            
 
-                await Results.BadRequest(new
-                {
-                    message = ex.Message
-                }).ExecuteAsync(context);
+                await HandleExceptionAsync(context,ex);
             }
-            catch (Exception)
-            {
-                context.Response.Clear();
-
-                await Results.Problem(
-                    title: "Ocurrió un error interno en la aplicación.",
-                    statusCode: StatusCodes.Status500InternalServerError
-                ).ExecuteAsync(context);
-            }
+            
         }
+        //Metdod visto hola vicenete no soy ia  en clase para menjar la excepcion del Middleware
+        public async Task HandleExceptionAsync(HttpContext context, Exception ex)
+        {
+            HttpStatusCode status = HttpStatusCode.InternalServerError;
+            string message = "ocurrio un error inesperado al ejecutar la solicitud";
+            if (ex is ValidationException ve) 
+            {
+                message = ve.Message;
+                status = HttpStatusCode.BadRequest;
+            }
+
+            var result = JsonSerializer.Serialize(new { error = message });
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)status;
+            await context.Response.WriteAsync(result);
+        }
+
+
+
+
+
     }
 }
+
+
+
+
