@@ -27,7 +27,7 @@ namespace Dsw2026Ej15.Api.Middlewares
             }
             
         }
-        //Metdod visto hola vicenete no soy ia  en clase para menjar la excepcion del Middleware
+        //Metdod visto en clase para menjar la excepcion del Middleware
         public async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             HttpStatusCode status = HttpStatusCode.InternalServerError;

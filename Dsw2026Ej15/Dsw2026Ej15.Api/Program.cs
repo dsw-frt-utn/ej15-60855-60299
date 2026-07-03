@@ -1,6 +1,7 @@
 using Dsw2026Ej15.Api.Middlewares;
 using Dsw2026Ej15.Data;
 using Dsw2026Ej15.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 namespace Dsw2026Ej15.Api
 {
     public class Program
@@ -10,9 +11,11 @@ namespace Dsw2026Ej15.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
- 
+
             //var services = new ServiceCollection() ;
-            builder.Services.AddSingleton <IPersistence, PersistenceInMemory> ();
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<Dsw2026Ej15DbContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddScoped<IPersistence, PersistenceEf>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

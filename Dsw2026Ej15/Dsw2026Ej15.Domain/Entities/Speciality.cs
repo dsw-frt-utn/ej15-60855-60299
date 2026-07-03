@@ -9,11 +9,14 @@ namespace Dsw2026Ej15.Domain.Entities
         public string Name { get; init; } 
         public string Description { get; init; }
 
+        private Speciality()
+        {
+        }
 
         public Speciality(string name, string description, Guid? id = null) : base(id) 
         {
             Name = name;
-            Description = description;
+            Description = description;  
 
         }       
         
