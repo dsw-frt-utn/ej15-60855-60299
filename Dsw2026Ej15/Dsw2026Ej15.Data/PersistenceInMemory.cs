@@ -1,73 +1,54 @@
-﻿using System.Text.Json;
+﻿using Dsw2026Ej15.Data.Dtos;
 using Dsw2026Ej15.Domain.Entities;
 using Dsw2026Ej15.Domain.Interfaces;
-using Dsw2026Ej15.Data.Dtos;
+using System.Text.Json;
 
+namespace Dsw2026Ej15.Data;
 
-namespace Dsw2026Ej15.Data
+public class PersistenceInMemory : IPersistence
 {
-    public class PersistenceInMemory : IPersistence
+    private List<Speciality> _specialities = [];
+    private List<Doctor> _doctors = [];
+    public PersistenceInMemory()
     {
+        LoadSpecialities();
+    }
+    public async Task AddDoctor(Doctor doctor)
+    {
+        _doctors.Add(doctor);
+    }
+    public async Task<IEnumerable<Doctor>> GetAllDoctors()
+    {
+        return _doctors;
+    }
 
-        private  List<Doctor> _doctors = [];
-        private  List<Speciality> _specialities = [];
+    public async Task<Doctor?> GetDoctor(Guid doctorId)
+    {
+        return _doctors.FirstOrDefault(d => d.Id == doctorId);
+    }
 
-        
-        public PersistenceInMemory() 
+    public async Task<Speciality?> GetSpecialityById(Guid id)
+    {
+        return _specialities.SingleOrDefault(s => s.Id == id);
+    }
+
+    public async Task UpdateDoctor(Doctor doctor)
+    {
+        _doctors.Remove(doctor);
+        _doctors.Add(doctor);
+    }
+    private void LoadSpecialities()
+    {
+        try
         {
-             LoadSpecialities();
+            string jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sources", "specialities.json");
+            var json = File.ReadAllText(jsonPath);
+            var specialities = JsonSerializer.Deserialize<List<SpecialityDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? [];
+            _specialities = [.. specialities.Select(s => new Speciality(s.Name, s.Description, s.Id))];
         }
-
-        public void AddDoctor(Doctor doctor)
+        catch (Exception ex)
         {
-            _doctors.Add(doctor);
+
         }
-
-        public List<Doctor> GetAllDoctors()
-        {
-            return _doctors.ToList();
-        }
-
-        public Speciality? GetSpecialityById(Guid id)
-        {
-            return _specialities.SingleOrDefault(speciality => speciality.Id == id);
-        }
-       
-
-        public Doctor? GetDoctor(Guid id)
-        {
-            return _doctors.FirstOrDefault(doctor => doctor.Id == id);
-        
-        }
-        public void DeleteDoctor(Guid id)
-        {
-            Doctor? doctor = GetDoctor(id);
-
-            if (doctor != null)
-            {
-                doctor.Deactivate();
-            }
-        }
-
-        private void LoadSpecialities()
-        {
-            try
-            {
-                string jsonpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sources", "specialities.json");
-                var json = File.ReadAllText(jsonpath);
-                var specialities = JsonSerializer.Deserialize<List<SpecialityDto>>(json,
-                    new JsonSerializerOptions()
-                    {
-                        PropertyNameCaseInsensitive = true,
-                    }) ?? [];
-                _specialities = [.. specialities.Select(s => new Speciality(s.Name, s.Description, s.Id))];
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
-
     }
 }
